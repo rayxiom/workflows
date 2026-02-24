@@ -1,3 +1,3 @@
-import { so1ve } from "@so1ve/eslint-config";
+import { rayxiom } from "@rayxiom/eslint-config";
 
-export default so1ve();
+export default rayxiom();
