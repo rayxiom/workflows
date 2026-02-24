@@ -1,0 +1,36 @@
+name: Rust Release
+
+on:
+  workflow_call:
+    inputs:
+      toolchain:
+        required: false
+        type: string
+        default: stable
+
+      command:
+        required: false
+        type: string
+        default: release
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+      pull-requests: write
+    steps:
+      - name: Setup Rust
+        uses: rayxiom/workflows/setup-rust@v1
+        with:
+          toolchain: ${{ inputs.toolchain }}
+          fetch-all: "true"
+
+      - name: Run release-plz
+        uses: release-plz/action@v0.5
+        with:
+          command: ${{ inputs.command }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

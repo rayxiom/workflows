@@ -1,0 +1,94 @@
+name: Rust CI
+
+on:
+  workflow_call:
+    inputs:
+      toolchain:
+        required: false
+        type: string
+        default: nightly
+
+      rustfmt:
+        required: false
+        type: boolean
+        default: true
+
+      clippy:
+        required: false
+        type: boolean
+        default: true
+
+      test:
+        required: false
+        type: boolean
+        default: true
+
+      test-args:
+        required: false
+        type: string
+        default: "--all"
+
+      fmt-check:
+        required: false
+        type: string
+        default: "cargo fmt --all -- --check"
+
+      clippy-command:
+        required: false
+        type: string
+        default: "cargo clippy --all-targets -- -D warnings"
+
+      test-command:
+        required: false
+        type: string
+        default: "cargo test --all"
+
+      runs-on:
+        required: false
+        type: string
+        default: ubuntu-latest
+
+      runs-on-matrix:
+        required: false
+        type: string
+        default: "ubuntu-latest,windows-latest,macos-latest"
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ${{ inputs.runs-on }}
+    if: ${{ inputs.toolchain != '' }}
+    steps:
+      - name: Setup Rust
+        uses: rayxiom/workflows/setup-rust@v1
+        with:
+          toolchain: ${{ inputs.toolchain }}
+          components: rustfmt, clippy
+
+      - name: Check formatting
+        run: ${{ inputs.fmt-check }}
+        if: ${{ inputs.rustfmt }}
+
+      - name: Clippy
+        run: ${{ inputs.clippy-command }}
+        if: ${{ inputs.clippy }}
+
+  test:
+    name: Test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ${{ fromJson(format('[{0}]', inputs.runs-on-matrix)) }}
+      fail-fast: false
+    if: ${{ inputs.test && inputs.toolchain != '' }}
+    steps:
+      - name: Setup Rust
+        uses: rayxiom/workflows/setup-rust@v1
+        with:
+          toolchain: ${{ inputs.toolchain }}
+
+      - name: Run tests
+        run: ${{ inputs.test-command }}

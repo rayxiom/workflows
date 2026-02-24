@@ -1,16 +1,18 @@
-# so1ve/workflows
+# rayxiom/workflows
 
-A collection of reusable GitHub Actions workflows and actions for TypeScript projects.
+A collection of reusable GitHub Actions workflows and actions for Ray's projects.
 
 > Adapted from [sxzz/workflows](https://github.com/sxzz/workflows)
 
 ## Features
 
 - Standardized CI/CD workflows for testing, building, and releasing
-- Easy integration into any TypeScript repository
+- Easy integration into any TypeScript or Rust repository
 - Includes custom actions for setup and automation
 
 ## Included Workflows
+
+### JavaScript/TypeScript
 
 - **Conventional CI**: Runs typecheck, lint, and tests with configurable Node.js versions
 - **autofix.ci**: Automatically fixes code style issues via a commit
@@ -20,6 +22,12 @@ A collection of reusable GitHub Actions workflows and actions for TypeScript pro
 - **Lock Threads**: Automatically locks closed issues after a period of inactivity
 - **Upload code coverage to Codecov**: Uploads code coverage reports to Codecov
 
+### Rust
+
+- **Rust CI**: Runs rustfmt, clippy, and tests with configurable toolchain
+- **Rust Release**: Publishes releases using release-plz
+- **Rust autofix.ci**: Automatically fixes code style issues via a commit
+
 ## Usage
 
 To use a workflow, reference it in your project’s `.github/workflows/*.yml`:
@@ -28,10 +36,12 @@ To use a workflow, reference it in your project’s `.github/workflows/*.yml`:
 # Example: Conventional CI
 jobs:
   ci:
-    uses: so1ve/workflows/.github/workflows/conventional-ci.yml@v1
+    uses: rayxiom/workflows/.github/workflows/conventional-ci.yml@v1
 ```
 
 See the example workflow configurations in the [`examples/`](./examples) folder:
+
+### JavaScript/TypeScript
 
 - [Conventional CI](./examples/conventional-ci.yml)
 - [autofix.ci](./examples/autofix-ci.yml)
@@ -40,11 +50,18 @@ See the example workflow configurations in the [`examples/`](./examples) folder:
 - [Lock Threads](./examples/lock.yml)
 - [Upload code coverage to Codecov](./examples/coverage.yml)
 
+### Rust
+
+- [Rust CI](./examples/rust-ci.yml)
+- [Rust Release](./examples/rust-release.yml)
+- [Rust autofix.ci](./examples/rust-autofix-ci.yml)
+
 For more details, see the workflow definitions in the [`.github/workflows/`](./.github/workflows) folder.
 
 ## Actions
 
 - [`setup-js/action.yml`](./setup-js/action.yml): Sets up Node.js and installs dependencies
+- [`setup-rust/action.yml`](./setup-rust/action.yml): Sets up Rust toolchain with cargo cache
 
 ## License
 

@@ -1,0 +1,41 @@
+name: Setup Rust
+description: Setup Rust environment
+
+inputs:
+  persist-credentials:
+    description: Whether to configure the token or SSH key with the local git config
+    default: "false"
+
+  fetch-all:
+    description: Whether to fetch all history for all branches and tags.
+    default: "false"
+
+  toolchain:
+    description: "Rust toolchain to use. Examples: stable, nightly, 1.75.0"
+    default: nightly
+
+  components:
+    description: "Rust components to install. Examples: rustfmt, clippy"
+    default: ""
+
+  cache:
+    description: Whether to enable cargo cache
+    default: "true"
+
+runs:
+  using: composite
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        persist-credentials: ${{ inputs.persist-credentials }}
+        fetch-depth: "${{ inputs.fetch-all == 'true' && '0' || '1' }}"
+
+    - name: Install Rust
+      uses: dtolnay/rust-toolchain@${{ inputs.toolchain }}
+      with:
+        components: ${{ inputs.components }}
+
+    - name: Cache cargo
+      uses: Swatinem/rust-cache@v2
+      if: ${{ inputs.cache == 'true' }}

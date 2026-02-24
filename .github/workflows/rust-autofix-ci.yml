@@ -1,0 +1,39 @@
+name: Rust autofix.ci
+
+on:
+  workflow_call:
+    inputs:
+      toolchain:
+        required: false
+        type: string
+        default: nightly
+
+      fmt-command:
+        required: false
+        type: string
+        default: "cargo fmt"
+
+      commit-message:
+        required: false
+        type: string
+        default: "chore: apply automatic fixes"
+
+permissions:
+  contents: read
+
+jobs:
+  autofix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Rust
+        uses: rayxiom/workflows/setup-rust@v1
+        with:
+          toolchain: ${{ inputs.toolchain }}
+          components: rustfmt
+
+      - name: Run cargo fmt
+        run: ${{ inputs.fmt-command }}
+
+      - uses: autofix-ci/action@635ffb0c9798bd160680f18fd73371e355b85f27
+        with:
+          commit-message: ${{ inputs.commit-message }}
