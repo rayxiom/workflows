@@ -32,10 +32,10 @@ runs:
         fetch-depth: "${{ inputs.fetch-all == 'true' && '0' || '1' }}"
 
     - name: Install Rust
-      uses: actionutils/dynamic-uses@main
+      uses: dtolnay/rust-toolchain@master
       with:
-        uses: dtolnay/rust-toolchain@${{ inputs.toolchain }}
-        with: '{"components": "${{ inputs.components }}"}'
+        toolchain: ${{ inputs.toolchain }}
+        components: ${{ inputs.components }}
 
     - name: Cache cargo
       uses: Swatinem/rust-cache@v2
