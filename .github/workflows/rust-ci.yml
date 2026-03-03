@@ -51,7 +51,7 @@ on:
       runs-on-matrix:
         required: false
         type: string
-        default: "ubuntu-latest,windows-latest,macos-latest"
+        default: '"ubuntu-latest","windows-latest","macos-latest"'
 
 env:
   CARGO_TERM_COLOR: always
