@@ -26,6 +26,10 @@ inputs:
     description: Whether to enable cargo cache
     default: "true"
 
+  cache-key:
+    description: "Custom cache key for cargo cache. Default is based on the toolchain and targets."
+    default: ""
+
 runs:
   using: composite
   steps:
@@ -45,3 +49,5 @@ runs:
     - name: Cache cargo
       uses: Swatinem/rust-cache@v2
       if: ${{ inputs.cache == 'true' }}
+      with:
+        key: ${{ inputs.cache-key }}
