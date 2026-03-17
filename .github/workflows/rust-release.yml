@@ -29,6 +29,7 @@ jobs:
           fetch-all: "true"
 
       - name: Run release-plz
+        id: release-plz
         uses: release-plz/action@v0.5
         with:
           command: ${{ inputs.command }}
