@@ -14,6 +14,10 @@ inputs:
     description: "Rust toolchain to use. Examples: stable, nightly, 1.75.0"
     default: nightly
 
+  targets:
+    description: "Rust targets to install. Examples: x86_64-unknown-linux-musl, wasm32-unknown-unknown"
+    default: ""
+
   components:
     description: "Rust components to install. Examples: rustfmt, clippy"
     default: ""
@@ -35,6 +39,7 @@ runs:
       uses: dtolnay/rust-toolchain@master
       with:
         toolchain: ${{ inputs.toolchain }}
+        targets: ${{ inputs.targets }}
         components: ${{ inputs.components }}
 
     - name: Cache cargo
